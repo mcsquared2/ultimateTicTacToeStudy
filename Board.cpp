@@ -4,11 +4,11 @@
 Board::Board() {
     for (int i = 0; i < 9; i++) {
         for(int j = 0; j < 9; j++) {
-            local_states[i][j] = marks[UNMARKED];
+            local_states[i][j] = cell_marks[UNMARKED];
         }
     }
     for(int j = 0; j < 9; j++) {
-        global_state[j] = marks[UNMARKED];
+        global_state[j] = cell_marks[UNMARKED];
     }
 }
 
@@ -30,31 +30,57 @@ std::string Board::DisplayString() {
     return state;
 }
 
-// char IsBoardWon(char board*){
-//     // Check horizontally
-//     for ( int i = 0; i < 9; i+=3 ) {
-//         if (board[i] != marks[UNMARKED] && board[i] == board[i+1] && board[i+2] == board[i]){
-//             return board[i];
-//         }
-//     }
+BOARD_STATE convertCharToState(char c) {
+    switch (c) {
+        case 'X':
+            return X;
+        case 'O':
+            return O;
+        case '-':
+            return UNFILLED;
+        case 'T':
+            return TIE;
+        default:
+            return LAST_BOARD_STATE;
+    }
+}
 
-//     // Check Vertically
-//     for ( int i = 0; i < 3; i++ ) {
-//         if (board[i] != marks[UNMARKED] && board[i] == board[i+3] && board[i+6] == board[i]){
-//             return board[i];
-//         }
-//     }
+BOARD_STATE IsBoardWon(char board[]){
+    // Check horizontally
+    for ( int i = 0; i < 9; i+=3 ) {
+        if (board[i] != cell_marks[UNMARKED] && board[i] == board[i+1] && board[i+2] == board[i]){
+            return convertCharToState(board[i]);
+        }
+    }
 
-//     // Check diagonnaly down
-//     if(board[0] != marks[UNMARKED] && board[0] == board[5] && board[5] == board[8]) {
-//         return board[0];
-//     }
+    // Check Vertically
+    for ( int i = 0; i < 3; i++ ) {
+        if (board[i] != cell_marks[UNMARKED] && board[i] == board[i+3] && board[i+6] == board[i]){
+            return convertCharToState(board[i]);
+        }
+    }
 
-//     if(board[2] != marks[UNMARKED] && board[0] == board[5] && board[5] == board[6]) {
-//         return board[2];
-//     }
-//     return marks[UNMARKED];
-// }
+    // Check diagonnaly down
+    if(board[0] != cell_marks[UNMARKED] && board[0] == board[5] && board[5] == board[8]) {
+        return convertCharToState(board[0]);
+    }
+
+    if(board[2] != cell_marks[UNMARKED] && board[0] == board[5] && board[5] == board[6]) {
+        return convertCharToState(board[2]);
+    }
+
+    int marked_cells = 0;
+    for (int i = 0; i < 9; i ++) {
+        if (board[i] == cell_marks[X] || board[i] == cell_marks[O]) {
+            marked_cells++;
+        }
+    }
+    if (marked_cells == 9) {
+        return TIE;
+    }
+    
+    return UNFILLED;
+}
 
 char CheckLocalBoardForWin(int local_board_position) {
     

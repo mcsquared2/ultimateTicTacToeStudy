@@ -7,13 +7,21 @@ const int GLOBAL_BOARD_SIZE = 3;
 const int TOTAL_BOARD_SIZE = LOCAL_BOARD_SIZE * GLOBAL_BOARD_SIZE;
 const int NUMBER_OF_CELLS = TOTAL_BOARD_SIZE * TOTAL_BOARD_SIZE;
 
-enum states {
+enum BOARD_STATE {
     X, 
     O, 
-    UNMARKED, 
-    LAST
+    UNFILLED,
+    TIE, 
+    LAST_BOARD_STATE
 };
-const char marks[3] = {'X', 'O', '-'};
+
+enum CELL_STATE {
+    X_MARKED,
+    O_MARKED,
+    UNMARKED,
+    LAST_CELL_STATE
+};
+const char cell_marks[3] = {'X', 'O', '-'};
 
 class Board {
 public:
