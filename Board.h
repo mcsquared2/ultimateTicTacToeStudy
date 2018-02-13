@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <vector>
+#include <cstdlib>
 
 const int LOCAL_BOARD_SIZE = 3;
 const int GLOBAL_BOARD_SIZE = 3;
@@ -23,12 +25,24 @@ enum CELL_STATE {
 };
 const char cell_marks[3] = {'X', 'O', '-'};
 
+struct Move {
+    int board, cell;
+};
+
 class Board {
 public:
     Board();
     std::string DisplayString();
-    bool checkLocalBoardForWin(int local_board_position);
-private:
-    char global_state[9];
-    char local_states[9][9];
+    BOARD_STATE CheckLocalBoardForWin(int local_board_position);
+    BOARD_STATE CheckGlobalBoardForWin();
+    std::vector<Move> GetCurrentMoves();
+    bool ApplyMove(Move m);
+    std::string DisplayAvailableMoves();
+protected:
+    BOARD_STATE mGlobal_state[9];
+    char mLocal_states[9][9];
+    Move mLast_move;
+    int mTurn;
+    int mCurrentPlayer;
+
 };
