@@ -1,11 +1,10 @@
+#include <ctime>
 #include <iostream>
+#include <random>
 #include "Board.h"
 
-int main() {
 
-    // Board b;
-    // std::cout << b.DisplayString();
-    // std::vector<Move> moves = b.GetCurrentMoves();
+void test_generic_applyMove() {
     for (int y = 0; y < 9; y++) {
         for (int x = 0; x < 9; x++) {
             Board b;
@@ -17,35 +16,31 @@ int main() {
             std::cout << b.DisplayString();
         }
     }
+}
 
-    // std::cout << "These are the starting moves: \n\t";
-    // for (size_t i = 0; i < moves.size(); i++) {
-    //     std::cout << moves[i].board << "," << moves[i].cell << " " ;
-    //     if (i % 9 == 8) {
-    //         std::cout << "\n\t";
-    //     }
-    // }
-    // Move m;
-    // m.board = 1;
-    // m.cell = 0;
-    // b.ApplyMove(m);
-    // moves = b.GetCurrentMoves();
-    // std::cout << b.DisplayString();
-    // std::cout << "These are the moves after X plays on 1,0: \n\t";
-    // for (size_t i = 0; i < moves.size(); i++) {
-    //     std::cout << moves[i].board << "," << moves[i].cell << " " ;
-    //     if (i % 9 == 8) {
-    //         std::cout << "\n\t";
-    //     }
-    // }
-    // for (int i = 0; i < 9; i++) {
-    //     int arr[9];
-    //     b.GetLocalBoardIndices(i, arr);
-    //     std::cout << i << ": ";
-    //     for (int j = 0; j < 9; j++) {
-    //         std::cout << arr[j] << " ";
-    //     }
-    //     std::cout << std::endl;
-    // }
+void test_state_in_constructor() {
+
+    Board b;
+    std::vector<Move> moves = b.GetCurrentMoves();
+    for (int i = 0; i < 60; i++) {
+        // std::cout << (size_t)rand() % moves.size();
+        b.ApplyMove(moves[rand() % moves.size()]);
+        std::string expected_state = b.DisplayString();
+        Board b2(expected_state);
+        std::string actual_state = b2.DisplayString();
+        if (expected_state == actual_state) {
+            std::cout << "Test case " << i << " passed!\n";
+        } else {
+            std::cout << "Test case " << i << " failed\n";
+            std::cout << "expected: \n" << expected_state << "\ngot: \n" << actual_state;
+        }
+    }
+
+}
+
+int main() {
+    // srand(time(0));
+    // test_generic_apply_move();
+    test_state_in_constructor();
     return 0;
 }

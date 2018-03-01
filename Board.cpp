@@ -1,5 +1,6 @@
 #include "Board.h"
 #include <iostream>
+#include <stdlib.h>
 
 Board::Board() {
     for (int i = 0; i < 9; i++) {
@@ -14,6 +15,34 @@ Board::Board() {
 
     mTurn = 1;
     mCurrentPlayer = 0;
+}
+
+Board::Board(std::string& board_state) {
+    int c_index = 0;
+    int b, c;
+    for (unsigned int i = 0; i < board_state.size(); i++) {
+        if (!isspace(board_state[i])) {
+            if (c_index < 81) {
+                b = (c_index % 9) / 3 + (c_index / 27) * 3;
+                c = (c_index % 3) + ((c_index / 9) % 3 * 3);
+                mLocal_states[b][c] = board_state[i];
+                c_index ++;
+            } else {
+                // if (board:state.substr(i, i+3) == "t: ") {
+                //     // mTurn = atoi()
+                // }
+            }
+
+        }
+
+    }
+
+    UpdateGlobalState();
+
+    mTurn = 1;
+    mCurrentPlayer = 0;
+
+
 }
 
 std::string Board::DisplayString() {
@@ -31,6 +60,7 @@ std::string Board::DisplayString() {
             state += "\n";
         }
     }
+    // state += "t: " + std::to_string(mTurn) + " currentPlayer: " + std::to_string(mCurrentPlayer);
     return state;
 }
 
@@ -100,7 +130,7 @@ BOARD_STATE IsBoardWon(char board[]){
     if (marked_cells == 9) {
         return TIE;
     }
-    
+
     return UNFILLED;
 }
 
@@ -112,8 +142,8 @@ BOARD_STATE Board::CheckGlobalBoardForWin() {
      // Check horizontally
     for ( int i = 0; i < 9; i+=3 ) {
         if (
-            (mGlobal_state[i] == X || mGlobal_state[i] == O) && 
-            mGlobal_state[i] == mGlobal_state[i+1] && 
+            (mGlobal_state[i] == X || mGlobal_state[i] == O) &&
+            mGlobal_state[i] == mGlobal_state[i+1] &&
             mGlobal_state[i+2] == mGlobal_state[i]
         ){
             return convertCharToState(mGlobal_state[i]);
@@ -123,8 +153,8 @@ BOARD_STATE Board::CheckGlobalBoardForWin() {
     // Check Vertically
     for ( int i = 0; i < 3; i++ ) {
         if (
-            (mGlobal_state[i] == X || mGlobal_state[i] == O) && 
-            mGlobal_state[i] == mGlobal_state[i+3] && 
+            (mGlobal_state[i] == X || mGlobal_state[i] == O) &&
+            mGlobal_state[i] == mGlobal_state[i+3] &&
             mGlobal_state[i+6] == mGlobal_state[i]
         ){
             return convertCharToState(mGlobal_state[i]);
@@ -133,16 +163,16 @@ BOARD_STATE Board::CheckGlobalBoardForWin() {
 
     // Check diagonnaly down
     if(
-        (mGlobal_state[0] == X || mGlobal_state[0] == O) && 
-        mGlobal_state[0] == mGlobal_state[5] && 
+        (mGlobal_state[0] == X || mGlobal_state[0] == O) &&
+        mGlobal_state[0] == mGlobal_state[5] &&
         mGlobal_state[5] == mGlobal_state[8]
     ) {
         return convertCharToState(mGlobal_state[0]);
     }
 
     if(
-        (mGlobal_state[2] == X || mGlobal_state[2] == O) && 
-        mGlobal_state[0] == mGlobal_state[5] && 
+        (mGlobal_state[2] == X || mGlobal_state[2] == O) &&
+        mGlobal_state[0] == mGlobal_state[5] &&
         mGlobal_state[5] == mGlobal_state[6]
     ) {
         return convertCharToState(mGlobal_state[2]);
@@ -157,7 +187,7 @@ BOARD_STATE Board::CheckGlobalBoardForWin() {
     if (marked_cells == 9) {
         return TIE;
     }
-    
+
     return UNFILLED;
 }
 
@@ -192,7 +222,7 @@ std::vector<Move> Board::GetCurrentMoves() {
                         moves.push_back(m);
                     }
                 }
-            } 
+            }
         }
     }
     return moves;
@@ -206,5 +236,11 @@ bool Board::ApplyMove(Move m) {
         mCurrentPlayer = (mCurrentPlayer + 1) % 2;
         return true;
     }
-    return false; 
+    return false;
+}
+
+void Board::UpdateGlobalState() {
+    for (int i = 0; i < 9; i++) {
+        mGlobal_state[i] = CheckLocalBoardForWin(i);
+    }
 }
