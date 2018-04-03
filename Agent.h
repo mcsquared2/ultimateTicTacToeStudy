@@ -4,7 +4,14 @@
 class Agent {
 public:
     Agent();
-    Move getNextMove(std::vector<Move>& moves);
+    virtual Move getNextMove(Board * board) = 0;
 protected:
 
-}
+};
+
+class RandomAgent: public Agent 
+{
+public:
+    RandomAgent();
+    Move getNextMove(Board * board);
+};

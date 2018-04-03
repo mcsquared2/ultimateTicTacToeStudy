@@ -17,6 +17,8 @@ enum BOARD_STATE {
     LAST_BOARD_STATE
 };
 
+const std::string board_state_char[4] = {"X", "O", "-", "T"};
+
 enum CELL_STATE {
     X_MARKED,
     O_MARKED,
@@ -32,19 +34,23 @@ struct Move {
 class Board {
 public:
     Board();
-    Board(std::string& board_state);
+    Board(Board & b);
     std::string DisplayString();
     BOARD_STATE CheckLocalBoardForWin(int local_board_position);
-    BOARD_STATE CheckGlobalBoardForWin();
+    BOARD_STATE CheckGlobalBoardForWin() const ;
     std::vector<Move> GetCurrentMoves();
     bool ApplyMove(Move m);
+    bool UnMove(Move m);
     std::string DisplayAvailableMoves();
     void UpdateGlobalState();
+    int GetTurn();
+    int boardValue(int player, int global_win_weight, int global_partial_weight, int local_partial_weight) const;
 protected:
     BOARD_STATE mGlobal_state[9];
     char mLocal_states[9][9];
     Move mLast_move;
+    Move mSecond_last_move;
     int mTurn;
-    int mCurrentPlayer;
+    int mCurrentPlayer;;
 
 };

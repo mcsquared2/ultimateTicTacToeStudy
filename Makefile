@@ -1,5 +1,5 @@
 CXX := g++
-CXXFLAGS := -std=c++11 -Wall -fno-stack-protector -D_FORTIFY_SOURCE=0
+CXXFLAGS := -std=c++11 -Wall -g -fno-stack-protector -D_FORTIFY_SOURCE=0
 LDFLAGS := -lGL -lGLU -lglut
 TARGET := main
 
