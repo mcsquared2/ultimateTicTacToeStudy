@@ -2,12 +2,12 @@
 #include <iostream>
 #include <random>
 HueristicAgent::HueristicAgent(int player, int depth, double global_win_weight, double global_partial_weight, double local_partial_weight)
-    :mPlayer(player), 
-    mDepth(depth), 
-    mGlobal_win_weight(global_win_weight), 
-    mGlobal_partial_weight(global_partial_weight), 
+    :mPlayer(player),
+    mDepth(depth),
+    mGlobal_win_weight(global_win_weight),
+    mGlobal_partial_weight(global_partial_weight),
     mLocal_partial_weight(local_partial_weight),
-    mTime(0.0) 
+    mTime(0.0)
 {
 
 }
@@ -30,9 +30,9 @@ Move HueristicAgent::alpha_beta_search(Board *board, int player) {
 
 double HueristicAgent::max_value(Board & board, int player, int depth, double alpha, double beta, Move & move_delta ){
     if (terminal_test(board, player) || depth <= 0) {
-        if (depth == 5) {
-            std::cout << "Are we getting to the end?\n";
-        }
+        // if (depth == 5) {
+        //     std::cout << "Are we getting to the end?\n";
+        // }
         return utility(board, player);
     }
     Board b(board);
@@ -63,7 +63,7 @@ double HueristicAgent::max_value(Board & board, int player, int depth, double al
             size_t r = rand() % lowest_moves.size();
             // // std::cout << i << " " << moves.size() << " " << lowest_moves[r] <<  std::endl;
             move_delta = moves[lowest_moves[r]];
-            
+
             return best_heuristic;
         }
         alpha = alpha < best_heuristic ? alpha : best_heuristic;
@@ -107,11 +107,10 @@ double HueristicAgent::min_value(Board &board, int player, int depth, double alp
 
 
 double HueristicAgent::utility(const Board & board, int player) {
-    double p = board.boardValue(player, mGlobal_win_weight, mGlobal_partial_weight, mLocal_partial_weight); 
+    double p = board.boardValue(player, mGlobal_win_weight, mGlobal_partial_weight, mLocal_partial_weight);
     // std::cout << p << std::endl;
     return p;
 }
 bool HueristicAgent::terminal_test(const Board & board, int player) {
     return board.CheckGlobalBoardForWin() != UNFILLED;
 }
-

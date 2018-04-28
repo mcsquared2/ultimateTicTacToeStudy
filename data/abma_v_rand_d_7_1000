@@ -1,0 +1,26 @@
+Total games: 1000
+Ties: 74
+Player 1 data
+depth: 7
+local board win weight: 10
+global board partial weight: 100
+local board partial weight 1
+Average time for player 1: 5.30425
+Player 1 win percentage: 70.7%
+Player 2 data
+Player 2 is random!
+Average time for player 2: 0
+Player 2 win percentage: 21.9%
+Total games: 1000
+Ties: 399
+Player 1 data
+depth: 7
+local board win weight: 10
+global board partial weight: 100
+local board partial weight 1
+Average time for player 1: 3.77374
+Player 1 win percentage: 41.7%
+Player 2 data
+Player 2 is random!
+Average time for player 2: 0
+Player 2 win percentage: 18.4%

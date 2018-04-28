@@ -122,25 +122,25 @@ int main(int argc, char* argv[]) {
                 i++;
                 a2_depth = atoi(argv[i]);
             }
-            a2isH = true;            
+            a2isH = true;
         } else if ( a == "-a12") {
             if (i < argc) {
                 i++;
-                a1_gww = atof(argv[i]);                
+                a1_gww = atof(argv[i]);
                 a2_gww = atof(argv[i]);
                 i++;
                 a2_gpw = atof(argv[i]);
                 a1_gpw = atof(argv[i]);
                 i++;
-                a1_lpw = atof(argv[i]);                
+                a1_lpw = atof(argv[i]);
                 a2_lpw = atof(argv[i]);
                 i++;
-                a1_depth = atoi(argv[i]);                
+                a1_depth = atoi(argv[i]);
                 a2_depth = atoi(argv[i]);
             }
             a1isH = true;
             a2isH = true;
-            
+
         } else if ( a == "-g" ) {
             i++;
             games = atoi(argv[i]);
@@ -160,7 +160,7 @@ int main(int argc, char* argv[]) {
         a2 = new RandomAgent();
     }
     int p1_wins = 0, p2_wins = 0, ties = 0;
-    double p1_time_total = 0, p2_time_total = 0; 
+    double p1_time_total = 0, p2_time_total = 0;
     for (int i = 0; i < games; i++) {
         playGame(a1, a2, p1_wins, p2_wins, ties);
         if (a1isH) {
@@ -169,8 +169,8 @@ int main(int argc, char* argv[]) {
             ha->resetTime();
         }
         if (a2isH) {
-            HueristicAgent * ha = dynamic_cast<HueristicAgent *>(a2);            
-            p1_time_total += ha->getTime();
+            HueristicAgent * ha = dynamic_cast<HueristicAgent *>(a2);
+            p2_time_total += ha->getTime();
             ha->resetTime();
         }
     }
@@ -179,24 +179,65 @@ int main(int argc, char* argv[]) {
     std::cout << "Ties: " << ties << std::endl;
     std::cout << "Player 1 data\n";
     if (a1isH) {
-        std::cout << "depth: " << a1_depth << "\nlocal board win weight: " << a1_gww << 
+        std::cout << "depth: " << a1_depth << "\nlocal board win weight: " << a1_gww <<
             "\nglobal board partial weight: " << a1_gpw << "\nlocal board partial weight " << a1_lpw << std::endl;
     } else {
         std::cout << "Player 1 is random!\n";
     }
     std::cout << "Average time for player 1: " << p1_time_total / games << std::endl;
     std::cout << "Player 1 win percentage: " << (double)(p1_wins) / games * 100 << "%\n";
-    
+
     std::cout << "Player 2 data\n";
     if (a2isH) {
-        std::cout << "depth: " << a2_depth << "\nlocal board win weight: " << a2_gww << 
+        std::cout << "depth: " << a2_depth << "\nlocal board win weight: " << a2_gww <<
             "\nglobal board partial weight: " << a2_gpw << "\nlocal board partial weight " << a2_lpw << std::endl;
     } else {
         std::cout << "Player 2 is random!\n";
     }
     std::cout << "Average time for player 2: " << p2_time_total / games << std::endl;
     std::cout << "Player 2 win percentage: " << (double)(p2_wins) / games * 100 << "%\n";
-    
+
+    p1_wins = 0;
+    p2_wins = 0;
+    ties = 0;
+    p1_time_total = 0;
+    p2_time_total = 0;
+    for (int i = 0; i < games; i++) {
+        playGame(a2, a1, p1_wins, p2_wins, ties);
+        if (a1isH) {
+            HueristicAgent * ha = dynamic_cast<HueristicAgent *>(a1);
+            p1_time_total += ha->getTime();
+            ha->resetTime();
+        }
+        if (a2isH) {
+            HueristicAgent * ha = dynamic_cast<HueristicAgent *>(a2);
+            p2_time_total += ha->getTime();
+            ha->resetTime();
+        }
+    }
+
+    std::cout << "Total games: " << games << std::endl;
+    std::cout << "Ties: " << ties << std::endl;
+    std::cout << "Player 1 data\n";
+    if (a1isH) {
+        std::cout << "depth: " << a1_depth << "\nlocal board win weight: " << a1_gww <<
+            "\nglobal board partial weight: " << a1_gpw << "\nlocal board partial weight " << a1_lpw << std::endl;
+    } else {
+        std::cout << "Player 1 is random!\n";
+    }
+    std::cout << "Average time for player 1: " << p1_time_total / games << std::endl;
+    std::cout << "Player 1 win percentage: " << (double)(p1_wins) / games * 100 << "%\n";
+
+    std::cout << "Player 2 data\n";
+    if (a2isH) {
+        std::cout << "depth: " << a2_depth << "\nlocal board win weight: " << a2_gww <<
+            "\nglobal board partial weight: " << a2_gpw << "\nlocal board partial weight " << a2_lpw << std::endl;
+    } else {
+        std::cout << "Player 2 is random!\n";
+    }
+    std::cout << "Average time for player 2: " << p2_time_total / games << std::endl;
+    std::cout << "Player 2 win percentage: " << (double)(p2_wins) / games * 100 << "%\n";
+
 
 
     delete a1;
