@@ -33,8 +33,29 @@ Board::Board(Board & b) {
     mLast_move = b.mLast_move;
 }
 
+Board::Board(char arr[]) {
+    int i = 0 ;
+    // just for clarification, the i++ return i but increments it by one
+    for (int b = 0; b < 9; b++) {
+        mGlobal_state[b] = static_cast<BOARD_STATE>(arr[i++]) ;
+    }
+    for (int g = 0; g < 9; g++) {
+        for (int c = 0; c < 9; c++) {
+            mLocal_states[g][c] = arr[i++] ;
+        }
+    }
+    mLast_move.board = arr[i++] ;
+    mLast_move.cell = arr[i++] ;
+    mSecond_last_move.board = arr[i++] ;
+    mSecond_last_move.cell = arr[i++] ;
+    mTurn = arr[i++] ;
+    mCurrentPlayer = arr[i++] ;
+
+}
+
 std::string Board::DisplayString() {
     std::string state = "";
+    state += "turn: " + std::to_string(mTurn) + " currentPlayer: " + std::to_string(mCurrentPlayer) + "\n";
     for ( int y = 0; y < 9; y++ ) {
         for ( int x = 0; x < 9; x++ ) {
             state += std::string(1, mLocal_states[(y/3)*3 + x/3][3*(y%3) + x%3]) + " ";
@@ -55,7 +76,6 @@ std::string Board::DisplayString() {
         }
     }
     state += "\n";
-    state += "turn: " + std::to_string(mTurn) + " currentPlayer: " + std::to_string(mCurrentPlayer) + "\n";
     return state;
 }
 
@@ -252,7 +272,7 @@ bool Board::ApplyMove(Move m) {
     }
 
     if (mGlobal_state[m.board] != UNFILLED) {
-        std::cout << "Move: Board is already filled\n";
+        // std::cout << "Move: Board is already filled\n";
         return false;
     }
     if ( mLocal_states[m.board][m.cell] == cell_marks[UNMARKED] ) {
@@ -303,6 +323,10 @@ void Board::UpdateGlobalState() {
 
 int Board::GetTurn() {
     return mTurn;
+}
+
+int Board::GetCurrentPlayer() {
+    return mCurrentPlayer ;
 }
 
 bool two_of_three (char a, char b, char c, int player) {
@@ -426,4 +450,30 @@ int Board::boardValue(
     return global_win_weight * global_win_count + 
         global_partial_weight * global_partial_count +
         local_partial_weight * local_partial_count;
+}
+
+int Board::getBoardArrSize() {
+    // global board state(9) + local board state (81) + last move(2) + second last move (2) + turn(1) + currentplayer (1) = 96
+    return 96 ;
+
+}
+
+
+void Board::Board2Arr(char arr[]) {
+    int i = 0 ;
+    // just for clarification, the i++ return i but increments it by one
+    for (int b = 0; b < 9; b++) {
+        arr[i++] = static_cast<char>(mGlobal_state[b]) ;
+    }
+    for (int g = 0; g < 9; g++) {
+        for (int c = 0; c < 9; c++) {
+            arr[i++] = mLocal_states[g][c] ;
+        }
+    }
+    arr[i++] = mLast_move.board ;
+    arr[i++] = mLast_move.cell ;
+    arr[i++] = mSecond_last_move.board ;
+    arr[i++] = mSecond_last_move.cell ;
+    arr[i++] = mTurn ;
+    arr[i++] = mCurrentPlayer ;
 }

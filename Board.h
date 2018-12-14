@@ -34,6 +34,7 @@ struct Move {
 class Board {
 public:
     Board();
+    Board(char arr[]) ;
     Board(Board & b);
     std::string DisplayString();
     BOARD_STATE CheckLocalBoardForWin(int local_board_position);
@@ -44,13 +45,17 @@ public:
     std::string DisplayAvailableMoves();
     void UpdateGlobalState();
     int GetTurn();
+    int GetCurrentPlayer() ;
     int boardValue(int player, int global_win_weight, int global_partial_weight, int local_partial_weight) const;
+    int getBoardArrSize() ;
+    void Board2Arr(char arr[]) ;
 protected:
     BOARD_STATE mGlobal_state[9];
     char mLocal_states[9][9];
     Move mLast_move;
     Move mSecond_last_move;
     int mTurn;
-    int mCurrentPlayer;;
+    int mCurrentPlayer;
+
 
 };
