@@ -18,4 +18,4 @@ clean:
 	-rm -f $(OBJECTS)
 
 parallel: 
-	mpic++ -std=c++11 parallel_main.cpp Agent.h Agent.cpp MonteCarloAgent.cpp MonteCarloAgent.h Board.h Board.cpp -o parallel.out
+	mpic++ -std=c++11 parallel_main.cpp Agent.h Agent.cpp MonteCarloParallelAgent.cpp MonteCarloParallelAgent.h MonteCarloAgent.cpp MonteCarloAgent.h Board.h Board.cpp -o parallel.out

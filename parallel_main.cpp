@@ -1,4 +1,4 @@
-#include "MonteCarloAgent.h"
+#include "MonteCarloParallelAgent.h"
 #include <iostream> 
 #include <mpi.h>
 #include <string> 
